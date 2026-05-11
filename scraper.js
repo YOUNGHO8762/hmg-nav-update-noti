@@ -44,10 +44,10 @@ function parseArguments() {
 // 3. 핵심 스크래핑 로직 (Scraping)
 // ============================================================================
 async function scrapeUpdateInfo({ brand, carNo, carOwner, url }) {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  const browser = await chromium.launch();
 
   try {
+    const page = await browser.newPage();
     console.log(
       `🚀 조회를 시작합니다: [${brand}] / 차량번호 [${carNo}] / 소유주 [${carOwner}]`,
     );
@@ -66,7 +66,7 @@ async function scrapeUpdateInfo({ brand, carNo, carOwner, url }) {
       console.log(`📝 정보 입력 중...`);
       await page.locator(SELECTORS.carNoInput).fill(carNo);
       await page.locator(SELECTORS.ownerInput).fill(carOwner);
-      await page.locator('text="지금 조회 하기"').click();
+      await page.locator(SELECTORS.submitButton).click();
       console.log('🖱️ "지금 조회하기" 버튼 클릭 완료. 결과를 기다립니다...');
     } catch (e) {
       throw new Error(
